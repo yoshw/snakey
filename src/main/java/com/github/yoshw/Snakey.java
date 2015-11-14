@@ -1,10 +1,10 @@
 package com.github.yoshw;
 
 /**
- * Hello world!
+ * Snakey: a simple implementation of Snake.
  *
  */
-public class App 
+public class Snakey
 {
     public static void main( String[] args )
     {

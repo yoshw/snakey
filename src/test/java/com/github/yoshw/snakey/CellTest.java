@@ -24,20 +24,20 @@ public class CellTest {
 
     @Test
     public void occupiedCellIsOccupied() {
-        cell.setOccupant(new GameObject());
+        cell.setOccupant(new Segment(cell));
         assertTrue(cell.isOccupied());
     }
 
     @Test
     public void emptyCellIsNotOccupied() {
-        cell.setOccupant(new GameObject());
+        cell.setOccupant(new Segment(cell));
         cell.setOccupant(null);
         assertFalse(cell.isOccupied());
     }
 
     @Test
     public void getOccupantReturnsOccupant() {
-        GameObject obj = new GameObject();
+        GameObject obj = new Segment(cell);
         cell.setOccupant(obj);
         assertSame(obj, cell.getOccupant());
     }

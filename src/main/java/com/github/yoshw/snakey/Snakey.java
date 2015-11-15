@@ -1,4 +1,4 @@
-package com.github.yoshw;
+package com.github.yoshw.snakey;
 
 import com.googlecode.lanterna.TerminalFacade;
 import com.googlecode.lanterna.terminal.Terminal;
@@ -17,17 +17,6 @@ public class Snakey
         terminal.enterPrivateMode();
         terminal.moveCursor(10, 5);
         terminal.putCharacter('H');
-        terminal.putCharacter('e');
-        terminal.putCharacter('l');
-        terminal.putCharacter('l');
-        terminal.putCharacter('o');
-        terminal.putCharacter(' ');
-        terminal.putCharacter('W');
-        terminal.putCharacter('o');
-        terminal.putCharacter('r');
-        terminal.putCharacter('l');
-        terminal.putCharacter('d');
-        terminal.putCharacter('!');
         terminal.moveCursor(10, 6);
         terminal.flush();
     }

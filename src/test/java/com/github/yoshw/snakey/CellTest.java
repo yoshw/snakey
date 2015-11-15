@@ -3,6 +3,7 @@ package com.github.yoshw.snakey;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -17,7 +18,7 @@ public class CellTest {
     }
 
     @Test
-    public void emptyCellIsNotOccupied() {
+    public void newCellIsNotOccupied() {
         assertFalse(cell.isOccupied());
     }
 
@@ -26,4 +27,19 @@ public class CellTest {
         cell.setOccupant(new GameObject());
         assertTrue(cell.isOccupied());
     }
+
+    @Test
+    public void emptyCellIsNotOccupied() {
+        cell.setOccupant(new GameObject());
+        cell.setOccupant(null);
+        assertFalse(cell.isOccupied());
+    }
+
+    @Test
+    public void getOccupantReturnsOccupant() {
+        GameObject obj = new GameObject();
+        cell.setOccupant(obj);
+        assertSame(obj, cell.getOccupant());
+    }
+
 }

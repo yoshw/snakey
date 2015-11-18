@@ -18,4 +18,13 @@ public class Cell {
     public GameObject getOccupant() {
         return this.occupant;
     }
+
+    @Override
+    public String toString() {
+        if (this.isOccupied()) {
+            return getOccupant().toString();
+        } else {
+            return " ";
+        }
+    }
 }

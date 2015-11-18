@@ -7,4 +7,9 @@ public class Segment extends GameObject {
     public Segment(Cell loc) {
         super(loc);
     }
+
+    @Override
+    public String toString() {
+        return "#";
+    }
 }

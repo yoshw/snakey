@@ -10,11 +10,13 @@ import static org.junit.Assert.assertTrue;
  * Created by Yosh on 15/11/2015.
  */
 public class CellTest {
+    private static Grid grid;
     private static Cell cell;
 
     @Before
     public void setUp() {
-        cell = new Cell();
+        grid = new Grid(1,1);
+        cell = grid.cellAt(0,0);
     }
 
     @Test
@@ -24,21 +26,20 @@ public class CellTest {
 
     @Test
     public void occupiedCellIsOccupied() {
-        cell.setOccupant(new Segment(cell));
+        Segment seg = new Segment(cell, Direction.RIGHT);
         assertTrue(cell.isOccupied());
     }
 
     @Test
     public void emptyCellIsNotOccupied() {
-        cell.setOccupant(new Segment(cell));
+        Segment seg = new Segment(cell, Direction.RIGHT);
         cell.setOccupant(null);
         assertFalse(cell.isOccupied());
     }
 
     @Test
     public void getOccupantReturnsOccupant() {
-        GameObject obj = new Segment(cell);
-        cell.setOccupant(obj);
+        GameObject obj = new Segment(cell, Direction.RIGHT);
         assertSame(obj, cell.getOccupant());
     }
 

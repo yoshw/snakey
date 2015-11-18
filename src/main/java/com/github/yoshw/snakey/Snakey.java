@@ -15,13 +15,19 @@ public class Snakey
 {
     public static void main( String[] args )
     {
-        Grid grid = new Grid(10,10);
+        World world = new World(40,40);
+
         Screen screen = TerminalFacade.createScreen();
         screen.startScreen();
-        ArrayList<String> gridStr = grid.toStringArray();
-        for (int i=0; i<grid.getHeight()+2; i++) {
-            screen.putString(10, 5+i, gridStr.get(i), Terminal.Color.BLACK, Terminal.Color.WHITE);
+        while (true) {
+            try {
+                Thread.sleep(200);    //1000 milliseconds is one second.
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+            world.update(screen.readInput());
+            world.render(screen);
+            screen.refresh();
         }
-        screen.refresh();
     }
 }

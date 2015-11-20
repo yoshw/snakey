@@ -6,13 +6,15 @@ import java.util.*;
  * Created by Yosh on 15/11/2015.
  */
 public class Grid {
+    private World world;
     private int height;
     private int width;
     private List<List<Cell>> grid;
 
-    public Grid(int height, int width) {
-        this.height = height;
-        this.width = width;
+    public Grid(World world) {
+        this.world = world;
+        this.height = world.getHeight();
+        this.width = world.getWidth();
 
         grid = new ArrayList<List<Cell>>();
         for (int i=0; i < this.height; i++) {
@@ -81,5 +83,22 @@ public class Grid {
     public String toString() {
         ArrayList<String> arr = this.toStringArray();
         return String.join("\n", arr);
+    }
+
+    public ArrayList<Cell> getFreeCells() {
+        ArrayList<Cell> freeCells = new ArrayList<Cell>();
+        for (int i=0; i<this.height; i++) {
+            for (int j=0; j<this.width; j++) {
+                Cell cell = this.cellAt(i, j);
+                if (!cell.isOccupied()) {
+                    freeCells.add(cell);
+                }
+            }
+        }
+        return freeCells;
+    }
+
+    public void updateFruitAndSnake() {
+        world.updateFruitAndSnake();
     }
 }

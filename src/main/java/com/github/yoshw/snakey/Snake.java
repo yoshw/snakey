@@ -8,10 +8,12 @@ import java.util.*;
  * Created by Yosh on 15/11/2015.
  */
 public class Snake {
-    ArrayList<BodySegment> body;
-    Head head;
+    private Grid grid;
+    private ArrayList<BodySegment> body;
+    private Head head;
 
     public Snake(int length, Grid grid) {
+        this.grid = grid;
         if (length > grid.getWidth()/2) {
             throw new IllegalArgumentException("Snake too long!");
         }
@@ -47,5 +49,14 @@ public class Snake {
         for (BodySegment seg : body) {
             seg.updateDir();
         }
+    }
+
+    public int length() {
+        return 1 + body.size();
+    }
+
+    public void grow() {
+        BodySegment tail = body.get(body.size()-1);
+        body.add(new BodySegment(grid.cellAt(0,0), Direction.RIGHT, tail));
     }
 }

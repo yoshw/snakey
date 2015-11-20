@@ -13,17 +13,18 @@ public class GridTest {
 
     @Before
     public void setUp() throws Exception {
-        grid = new Grid(3, 3);
+        World world = new World(10,10,1);
+        grid = new Grid(world);
     }
 
     @Test
     public void gridHeightIsInitialisedCorrectly() {
-        assertEquals(grid.getHeight(), 3);
+        assertEquals(grid.getHeight(), 10);
     }
 
     @Test
     public void gridWidthIsInitialisedCorrectly() {
-        assertEquals(grid.getWidth(), 3);
+        assertEquals(grid.getWidth(), 10);
     }
 
     @Test

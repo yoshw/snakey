@@ -50,10 +50,14 @@ public class Cell {
         }
         Cell target = grid.cellAt(targetRow, targetCol);
         if (target.isOccupied()) {
-            return this;
-        } else {
-            return target;
+            if (target.getOccupant() instanceof Fruit) {
+                target.setOccupant(null);
+                grid.updateFruitAndSnake();
+            } else {
+                throw new IllegalArgumentException("CRASH! YOU LOSE.");
+            }
         }
+        return target;
     }
 
     @Override

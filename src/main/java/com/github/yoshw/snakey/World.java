@@ -10,16 +10,18 @@ import com.googlecode.lanterna.terminal.Terminal;
  * Created by yosh on 18/11/15.
  */
 public class World {
-    Grid grid;
-    Snake snake;
+    private int height;
+    private int width;
+    private Grid grid;
+    private Snake snake;
+    private Random randomGenerator;
 
     public World(int height, int width, int snakeLength) {
-        this.init(height, width, snakeLength);
-    }
-
-    public void init(int height, int width, int snakeLength) {
-        grid = new Grid(height, width);
+        this.height = height;
+        this.width = width;
+        grid = new Grid(this);
         snake = new Snake(snakeLength, grid);
+        randomGenerator = new Random();
     }
 
     public void render(Screen screen) {
@@ -32,5 +34,29 @@ public class World {
 
     public void update(Key inputKey) {
         snake.update(inputKey);
+    }
+
+    public void dropFruit() {
+        ArrayList<Cell> freeCells = grid.getFreeCells();
+        if (freeCells.isEmpty()) {
+            return;
+        }
+        int index = randomGenerator.nextInt(freeCells.size());
+        Cell cell = freeCells.get(index);
+        // TODO make the call to setOccupant explicit, rather than in constructor
+        new Fruit(cell);
+    }
+
+    public void updateFruitAndSnake() {
+        dropFruit();
+        snake.grow();
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 }

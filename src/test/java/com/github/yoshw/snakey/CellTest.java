@@ -15,7 +15,8 @@ public class CellTest {
 
     @Before
     public void setUp() {
-        grid = new Grid(1,1);
+        World world = new World(10,10,1);
+        grid = new Grid(world);
         cell = grid.cellAt(0,0);
     }
 

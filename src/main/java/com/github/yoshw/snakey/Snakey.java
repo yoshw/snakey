@@ -15,13 +15,14 @@ public class Snakey
 {
     public static void main( String[] args )
     {
-        World world = new World(40,40, 5);
+        World world = new World(30,40, 5);
 
         Screen screen = TerminalFacade.createScreen();
         screen.startScreen();
+        world.dropFruit();
         while (true) {
             try {
-                Thread.sleep(200);    //1000 milliseconds is one second.
+                Thread.sleep(100);    //1000 milliseconds is one second.
             } catch(InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }

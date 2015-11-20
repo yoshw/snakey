@@ -13,13 +13,13 @@ public class World {
     Grid grid;
     Snake snake;
 
-    public World(int height, int width) {
-        this.init(height, width);
+    public World(int height, int width, int snakeLength) {
+        this.init(height, width, snakeLength);
     }
 
-    public void init(int height, int width) {
+    public void init(int height, int width, int snakeLength) {
         grid = new Grid(height, width);
-        snake = new Snake(7, grid);
+        snake = new Snake(snakeLength, grid);
     }
 
     public void render(Screen screen) {

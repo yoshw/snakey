@@ -15,7 +15,7 @@ public class Snakey
 {
     public static void main( String[] args )
     {
-        World world = new World(40,40);
+        World world = new World(40,40, 5);
 
         Screen screen = TerminalFacade.createScreen();
         screen.startScreen();

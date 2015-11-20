@@ -19,7 +19,7 @@ public class Grid {
         grid = new ArrayList<List<Cell>>();
         for (int i=0; i < this.height; i++) {
             List<Cell> row = new ArrayList<Cell>();
-            for (int j=0; j < this.height; j++) {
+            for (int j=0; j < this.width; j++) {
                 row.add(new Cell(this, i, j));
             }
             grid.add(row);

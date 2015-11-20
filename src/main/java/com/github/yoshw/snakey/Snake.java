@@ -8,22 +8,22 @@ import java.util.*;
  * Created by Yosh on 15/11/2015.
  */
 public class Snake {
-    ArrayList<Segment> body;
-    Segment head;
+    ArrayList<BodySegment> body;
+    Head head;
 
     public Snake(int length, Grid grid) {
         if (length > grid.getWidth()/2) {
             throw new IllegalArgumentException("Snake too long!");
         }
-        body = new ArrayList<Segment>();
         int startingRow = grid.getHeight()/2;
         int currCol = grid.getWidth()/2;
-        body.add(new Segment(grid.cellAt(startingRow, currCol)));
-        for (int i=1; i < length; i++) {
-            body.add(new Segment(grid.cellAt(startingRow, currCol-i), Direction.RIGHT, body.get(i-1)));
+        head = new Head(grid.cellAt(startingRow, currCol));
+        body = new ArrayList<BodySegment>();
+        body.add(new BodySegment(grid.cellAt(startingRow, currCol-1), Direction.RIGHT, head));
+        for (int i=2; i < length; i++) {
+            body.add(new BodySegment(grid.cellAt(startingRow, currCol-i), Direction.RIGHT,
+                     body.get(i-2)));
         }
-        head = body.get(0);
-        assert(head != null);
     }
 
     public void update(Key inputKey) {
@@ -39,11 +39,12 @@ public class Snake {
             }
         }
 
-        for (Segment seg : body) {
+        head.move();
+        for (BodySegment seg : body) {
             seg.move();
         }
 
-        for (Segment seg : body) {
+        for (BodySegment seg : body) {
             seg.updateDir();
         }
     }

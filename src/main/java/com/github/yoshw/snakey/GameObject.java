@@ -10,6 +10,5 @@ public abstract class GameObject {
             throw new IllegalArgumentException("cell already occupied!");
         }
         this.location = loc;
-        loc.setOccupant(this);
     }
 }

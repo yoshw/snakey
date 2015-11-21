@@ -14,7 +14,7 @@ public class Head extends Segment {
 
     public void move() {
         location.setOccupant(null);
-        location = location.requestMove(dir);
+        location = location.neighbour(dir);
         location.setOccupant(this);
     }
 

@@ -8,23 +8,30 @@ import java.util.*;
  * Created by Yosh on 15/11/2015.
  */
 public class Snake {
-    private Grid grid;
+    private World world;
     private ArrayList<BodySegment> body;
     private Head head;
 
-    public Snake(int length, Grid grid) {
-        this.grid = grid;
-        if (length > grid.getWidth()/2) {
+    public Snake(int length, World world) {
+        this.world = world;
+        if (length > world.getWidth()/2) {
             throw new IllegalArgumentException("Snake too long!");
         }
-        int startingRow = grid.getHeight()/2;
-        int currCol = grid.getWidth()/2;
-        head = new Head(grid.cellAt(startingRow, currCol));
+        int row = world.getHeight()/2;
+        int initCol = world.getWidth()/2;
+
+        Cell currCell = world.cellAt(row, initCol);
+        head = new Head(currCell);
+        currCell.setOccupant(head);
+
         body = new ArrayList<BodySegment>();
-        body.add(new BodySegment(grid.cellAt(startingRow, currCol-1), Direction.RIGHT, head));
+
+        currCell = world.cellAt(row, initCol-1);
+        extend(currCell);
+
         for (int i=2; i < length; i++) {
-            body.add(new BodySegment(grid.cellAt(startingRow, currCol-i), Direction.RIGHT,
-                     body.get(i-2)));
+            currCell = world.cellAt(row, initCol-i);
+            extend(currCell);
         }
     }
 
@@ -41,6 +48,10 @@ public class Snake {
             }
         }
 
+        world.requestMove(this);
+    }
+
+    public void move() {
         head.move();
         for (BodySegment seg : body) {
             seg.move();
@@ -55,8 +66,22 @@ public class Snake {
         return 1 + body.size();
     }
 
-    public void grow() {
-        BodySegment tail = body.get(body.size()-1);
-        body.add(new BodySegment(grid.cellAt(0,0), Direction.RIGHT, tail));
+    public void extend(Cell location) {
+        Segment tail = tail();
+        BodySegment newSeg = new BodySegment(location, tail);
+        location.setOccupant(newSeg);
+        body.add(newSeg);
+    }
+
+    public Head head() {
+        return head;
+    }
+
+    public Segment tail() {
+        if (body.isEmpty()) {
+            return head;
+        } else {
+            return body.get(body.size() - 1);
+        }
     }
 }

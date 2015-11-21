@@ -7,8 +7,8 @@ public class BodySegment extends Segment {
     private Segment leader;
     private Cell leaderLoc;
 
-    public BodySegment(Cell loc, Direction dir, Segment leader) {
-        super(loc, dir);
+    public BodySegment(Cell loc, Segment leader) {
+        super(loc, leader.getDir());
         this.leader = leader;
         leaderLoc = leader.getLocation();
     }
@@ -20,7 +20,7 @@ public class BodySegment extends Segment {
     public void move() {
         location.setOccupant(null);
         location = leaderLoc;
-        leaderLoc = leader.getLocation();
         location.setOccupant(this);
+        leaderLoc = leader.getLocation();
     }
 }

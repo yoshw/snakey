@@ -12,21 +12,30 @@ import com.googlecode.lanterna.terminal.Terminal;
 public class World {
     private int height;
     private int width;
-    private Grid grid;
+    private List<List<Cell>> grid;
     private Snake snake;
     private Random randomGenerator;
 
     public World(int height, int width, int snakeLength) {
         this.height = height;
         this.width = width;
-        grid = new Grid(this);
-        snake = new Snake(snakeLength, grid);
         randomGenerator = new Random();
+
+        grid = new ArrayList<List<Cell>>();
+        for (int i=0; i < this.height; i++) {
+            List<Cell> row = new ArrayList<Cell>();
+            for (int j=0; j < this.width; j++) {
+                row.add(new Cell(this, i, j));
+            }
+            grid.add(row);
+        }
+
+        snake = new Snake(snakeLength, this);
     }
 
     public void render(Screen screen) {
-        ArrayList<String> gridStr = grid.toStringArray();
-        for (int i=0; i<grid.getHeight()+2; i++) {
+        ArrayList<String> gridStr = toStringArray();
+        for (int i=0; i < height+2; i++) {
             screen.putString(10, 5+i, gridStr.get(i),
                              Terminal.Color.BLACK, Terminal.Color.WHITE);
         }
@@ -37,19 +46,36 @@ public class World {
     }
 
     public void dropFruit() {
-        ArrayList<Cell> freeCells = grid.getFreeCells();
+        ArrayList<Cell> freeCells = getFreeCells();
         if (freeCells.isEmpty()) {
             return;
         }
         int index = randomGenerator.nextInt(freeCells.size());
         Cell cell = freeCells.get(index);
-        // TODO make the call to setOccupant explicit, rather than in constructor
-        new Fruit(cell);
+        Fruit fruit = new Fruit(cell);
+        cell.setOccupant(fruit);
+    }
+
+    public void requestMove(Snake snake) {
+        Cell headLoc = snake.head().getLocation();
+        Cell target = headLoc.neighbour(snake.head().getDir());
+        if (target.isOccupied()) {
+            if (target.getOccupant() instanceof Fruit) {
+                target.setOccupant(null);
+                Cell tailLoc = snake.tail().getLocation();
+                snake.move();
+                snake.extend(tailLoc);
+                dropFruit();
+            } else {
+                throw new IllegalArgumentException("CRASH! YOU LOSE.");
+            }
+        }
+        snake.move();
     }
 
     public void updateFruitAndSnake() {
         dropFruit();
-        snake.grow();
+        snake.extend(snake.tail().getLocation());
     }
 
     public int getHeight() {
@@ -58,5 +84,61 @@ public class World {
 
     public int getWidth() {
         return width;
+    }
+
+    public Cell cellAt(int row, int col) {
+        return grid.get(row).get(col);
+    }
+
+    public ArrayList<String> toStringArray() {
+        ArrayList<String> out = new ArrayList<String>();
+
+        StringBuilder top = new StringBuilder(this.width+2);
+        top.append(' ');
+        for (int j=0; j < this.width; j++) {
+            top.append('_');
+        }
+        top.append(' ');
+        out.add(top.toString());
+
+        for (int i=0; i < this.height; i++) {
+            StringBuilder row = new StringBuilder(this.width+2);
+            row.append('|');
+            for (int j=0; j < this.width; j++) {
+                String cellStr = grid.get(i).get(j).toString();
+                row.append(cellStr);
+            }
+            row.append('|');
+            out.add(row.toString());
+        }
+
+        StringBuilder bottom = new StringBuilder(this.width+2);
+        bottom.append(' ');
+        for (int j=0; j < this.width; j++) {
+            bottom.append('-');
+        }
+        bottom.append(' ');
+        out.add(bottom.toString());
+
+        return out;
+    }
+
+    @Override
+    public String toString() {
+        ArrayList<String> arr = this.toStringArray();
+        return String.join("\n", arr);
+    }
+
+    public ArrayList<Cell> getFreeCells() {
+        ArrayList<Cell> freeCells = new ArrayList<Cell>();
+        for (int i=0; i<this.height; i++) {
+            for (int j=0; j<this.width; j++) {
+                Cell cell = this.cellAt(i, j);
+                if (!cell.isOccupied()) {
+                    freeCells.add(cell);
+                }
+            }
+        }
+        return freeCells;
     }
 }

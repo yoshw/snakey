@@ -45,7 +45,7 @@ public class World {
         snake.update(inputKey);
     }
 
-    public void dropFruit() {
+    public void spawnFruit() {
         ArrayList<Cell> freeCells = getFreeCells();
         if (freeCells.isEmpty()) {
             return;
@@ -65,7 +65,7 @@ public class World {
                 Cell tailLoc = snake.tail().getLocation();
                 snake.move();
                 snake.extend(tailLoc);
-                dropFruit();
+                spawnFruit();
             } else {
                 gameOver = true;
                 return;
@@ -76,11 +76,6 @@ public class World {
 
     public boolean gameIsOver() {
         return gameOver;
-    }
-
-    public void updateFruitAndSnake() {
-        dropFruit();
-        snake.extend(snake.tail().getLocation());
     }
 
     public int getHeight() {

@@ -40,7 +40,7 @@ public class Snakey {
     public static void init(Screen screen) {
         world = new World(20, 30, 5);
         screen.startScreen();
-        world.dropFruit();
+        world.spawnFruit();
     }
 
     public static void update(Screen screen) {

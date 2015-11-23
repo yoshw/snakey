@@ -24,17 +24,19 @@ public class Snakey {
 
     public static void start(Screen screen) {
         init(screen);
-
         while (!world.gameIsOver()) {
-            try {
-                Thread.sleep(100);    //1000 milliseconds is one second.
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
+            delay(100);
             update(screen);
         }
-
         gameOver(screen);
+    }
+
+    public static void delay(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     public static void init(Screen screen) {

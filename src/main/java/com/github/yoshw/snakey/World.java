@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.googlecode.lanterna.input.Key;
 import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.terminal.Terminal;
+import com.googlecode.lanterna.terminal.Terminal.Color;
 
 /**
  * Created by yosh on 18/11/15.
@@ -15,6 +15,7 @@ public class World {
     private List<List<Cell>> grid;
     private Snake snake;
     private Random randomGenerator;
+    private boolean gameOver;
 
     public World(int height, int width, int snakeLength) {
         this.height = height;
@@ -33,11 +34,10 @@ public class World {
         snake = new Snake(snakeLength, this);
     }
 
-    public void render(Screen screen) {
+    public void render(Screen screen, Color fgColor, Color bgColor) {
         ArrayList<String> gridStr = toStringArray();
         for (int i=0; i < height+2; i++) {
-            screen.putString(10, 5+i, gridStr.get(i),
-                             Terminal.Color.BLACK, Terminal.Color.WHITE);
+            screen.putString(3, 3+i, gridStr.get(i), fgColor, bgColor);
         }
     }
 
@@ -67,10 +67,15 @@ public class World {
                 snake.extend(tailLoc);
                 dropFruit();
             } else {
-                throw new IllegalArgumentException("CRASH! YOU LOSE.");
+                gameOver = true;
+                return;
             }
         }
         snake.move();
+    }
+
+    public boolean gameIsOver() {
+        return gameOver;
     }
 
     public void updateFruitAndSnake() {

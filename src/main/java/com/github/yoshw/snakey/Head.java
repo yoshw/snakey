@@ -12,6 +12,9 @@ public class Head extends Segment {
         super(loc, dir);
     }
 
+    /**
+     * Assumes that the neighbour square is empty!
+     */
     public void move() {
         location.setOccupant(null);
         location = location.neighbour(dir);
@@ -19,25 +22,25 @@ public class Head extends Segment {
     }
 
     public void faceUp() {
-        if (dir == Direction.RIGHT || dir == Direction.LEFT) {
+        if (dir != Direction.DOWN) {
             dir = Direction.UP;
         }
     }
 
     public void faceRight() {
-        if (dir == Direction.UP || dir == Direction.DOWN) {
+        if (dir != Direction.LEFT) {
             dir = Direction.RIGHT;
         }
     }
 
     public void faceDown() {
-        if (dir == Direction.RIGHT || dir == Direction.LEFT) {
+        if (dir != Direction.UP) {
             dir = Direction.DOWN;
         }
     }
 
     public void faceLeft() {
-        if (dir == Direction.UP || dir == Direction.DOWN) {
+        if (dir != Direction.RIGHT) {
             dir = Direction.LEFT;
         }
     }

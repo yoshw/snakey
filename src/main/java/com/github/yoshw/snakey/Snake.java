@@ -36,6 +36,11 @@ public class Snake {
     }
 
     public void update(Key inputKey) {
+        this.updateDir(inputKey);
+        world.requestMove(this);
+    }
+
+    public void updateDir(Key inputKey) {
         if (inputKey != null) {
             if (inputKey.getKind() == Key.Kind.ArrowUp) {
                 head.faceUp();
@@ -47,8 +52,6 @@ public class Snake {
                 head.faceLeft();
             }
         }
-
-        world.requestMove(this);
     }
 
     public void move() {
@@ -60,10 +63,6 @@ public class Snake {
         for (BodySegment seg : body) {
             seg.updateDir();
         }
-    }
-
-    public int length() {
-        return 1 + body.size();
     }
 
     public void extend(Cell location) {

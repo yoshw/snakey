@@ -16,19 +16,24 @@ import java.nio.charset.Charset;
 public class Snakey {
     private static World world;
     private static Screen screen;
+    private static boolean replay;
 
     public static void main( String[] args ) {
         screen = TerminalFacade.createScreen();
-        start(screen);
+        replay = true;
+        while (replay) {
+            replay = start(screen);
+        }
+        System.exit(0);
     }
 
-    public static void start(Screen screen) {
+    public static boolean start(Screen screen) {
         init(screen);
         while (!world.gameIsOver()) {
             delay(100);
             update(screen);
         }
-        gameOver(screen);
+        return gameOver(screen);
     }
 
     public static void delay(int ms) {
@@ -51,7 +56,7 @@ public class Snakey {
         screen.refresh();
     }
 
-    public static void gameOver(Screen screen) {
+    public static boolean gameOver(Screen screen) {
         world.render(screen, Terminal.Color.BLACK, Terminal.Color.BLUE);
         screen.putString(10, 10, "Game Over!", Terminal.Color.BLACK, Terminal.Color.WHITE);
         screen.putString(10, 12, "(p)lay again? or (q)uit?", Terminal.Color.BLACK, Terminal.Color.WHITE);
@@ -63,9 +68,9 @@ public class Snakey {
             if (inputKey != null) {
                 if (inputKey.getKind() == Key.Kind.NormalKey) {
                     if (inputKey.getCharacter() == 'q') {
-                        System.exit(0);
+                        return false; // no replay
                     } else if (inputKey.getCharacter() == 'p') {
-                        start(screen);
+                        return true; //replay flag
                     }
                 }
             }

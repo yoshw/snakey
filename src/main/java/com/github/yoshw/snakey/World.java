@@ -16,6 +16,7 @@ public class World {
     private Snake snake;
     private Random randomGenerator;
     private boolean gameOver;
+    private int numFruitCollected;
 
     public World(int height, int width, int snakeLength) {
         this.height = height;
@@ -61,6 +62,7 @@ public class World {
         Cell target = headLoc.neighbour(snake.head().getDir());
         if (target.isOccupied()) {
             if (target.getOccupant() instanceof Fruit) {
+                numFruitCollected += 1;
                 target.setOccupant(null);
                 Cell tailLoc = snake.tail().getLocation();
                 snake.move();
@@ -140,5 +142,9 @@ public class World {
             }
         }
         return freeCells;
+    }
+
+    public int getScore() {
+        return 10 * numFruitCollected;
     }
 }

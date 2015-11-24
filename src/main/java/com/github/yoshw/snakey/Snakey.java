@@ -58,7 +58,8 @@ public class Snakey {
 
     public static boolean gameOver(Screen screen) {
         world.render(screen, Terminal.Color.BLACK, Terminal.Color.BLUE);
-        screen.putString(10, 10, "Game Over!", Terminal.Color.BLACK, Terminal.Color.WHITE);
+        int score = world.getScore();
+        screen.putString(10, 10, "Game Over! Score: " + score, Terminal.Color.BLACK, Terminal.Color.WHITE);
         screen.putString(10, 12, "(p)lay again? or (q)uit?", Terminal.Color.BLACK, Terminal.Color.WHITE);
         screen.refresh();
 

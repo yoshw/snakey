@@ -1,26 +1,29 @@
 package com.github.yoshw.snakey;
+
+import java.util.Map;
+
 /**
  * Created by Yosh on 15/11/2015.
  */
 public class Cell {
     private World world;
-    private int row, col;
+    private Map<Direction, Cell> neighbours;
     private GameObject occupant;
 
-    public Cell(World world, int row, int col) {
+    public Cell(World world, Map<Direction, Cell> neighbours, GameObject o) {
         this.world = world;
-        this.row = row;
-        this.col = col;
+        this.neighbours = neighbours;
+        this.occupant = o;
     }
 
     public boolean isOccupied() {
-        return this.occupant != null;
+        return !this.occupant.isNull();
     }
 
     public void setOccupant(GameObject o) {
-        if (o != null && this.isOccupied()) {
-            throw new IllegalArgumentException("Cell already occupied!");
-        }
+//        if (this.isOccupied()) {
+//            throw new IllegalArgumentException("Cell already occupied! by " + occupant.toString());
+//        }
         this.occupant = o;
     }
 
@@ -28,27 +31,20 @@ public class Cell {
         return this.occupant;
     }
 
-    public Cell neighbour(Direction dir) {
-        int height = world.getHeight();
-        int width = world.getWidth();
-        if (dir == Direction.UP) {
-            return world.cellAt((this.row - 1 + height) % height, this.col);
-        } else if (dir == Direction.RIGHT) {
-            return world.cellAt(this.row, (this.col + 1 + width) % width);
-        } else if (dir == Direction.DOWN) {
-            return world.cellAt((this.row + 1 + height) % height, this.col);
-        } else {
-            // dir == Direction.LEFT
-            return world.cellAt(this.row, (this.col - 1 + width) % width);
-        }
+    public Cell getNeighbour(Direction dir) {
+        return neighbours.get(dir);
     }
 
     @Override
     public String toString() {
-        if (this.isOccupied()) {
-            return getOccupant().toString();
-        } else {
-            return " ";
-        }
+        return getOccupant().toString();
+    }
+
+    public Map<Direction,Cell> getNeighbours() {
+        return neighbours;
+    }
+
+    public void requestMove() {
+        world.handleRequestToMoveTo(this);
     }
 }

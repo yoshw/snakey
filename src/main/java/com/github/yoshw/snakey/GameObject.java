@@ -6,9 +6,8 @@ public abstract class GameObject {
     protected Cell location;
 
     public GameObject(Cell loc) {
-        if (loc.isOccupied()) {
-            throw new IllegalArgumentException("cell already occupied!");
-        }
         this.location = loc;
     }
+
+    abstract public boolean isNull();
 }

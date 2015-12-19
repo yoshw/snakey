@@ -16,8 +16,8 @@ public class Head extends Segment {
      * Assumes that the neighbour square is empty!
      */
     public void move() {
-        location.setOccupant(null);
-        location = location.neighbour(dir);
+        location.setOccupant(new NullGameObject());
+        location = location.getNeighbour(dir);
         location.setOccupant(this);
     }
 
@@ -43,5 +43,9 @@ public class Head extends Segment {
         if (dir != Direction.RIGHT) {
             dir = Direction.LEFT;
         }
+    }
+
+    public void requestMove() {
+        location.getNeighbour(dir).requestMove();
     }
 }

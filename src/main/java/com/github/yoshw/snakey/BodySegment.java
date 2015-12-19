@@ -18,7 +18,7 @@ public class BodySegment extends Segment {
     }
 
     public void move() {
-        location.setOccupant(null);
+        location.setOccupant(new NullGameObject());
         location = leaderLoc;
         location.setOccupant(this);
         leaderLoc = leader.getLocation();

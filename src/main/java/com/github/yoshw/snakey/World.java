@@ -18,28 +18,19 @@ public class World {
     private boolean gameOver;
     private int numFruitCollected;
 
-    public World(int height, int width, int snakeLength) {
+    public World(int height, int width, List<List<Cell>> grid, Random randomGenerator) {
         this.height = height;
         this.width = width;
-        randomGenerator = new Random();
-
-        grid = new ArrayList<List<Cell>>();
-        for (int i=0; i < this.height; i++) {
-            List<Cell> row = new ArrayList<Cell>();
-            for (int j=0; j < this.width; j++) {
-                row.add(new Cell(this, i, j));
-            }
-            grid.add(row);
-        }
-
-        snake = new Snake(snakeLength, this);
+        this.grid = grid;
+        this.randomGenerator = randomGenerator;
     }
 
-    public void render(Screen screen, Color fgColor, Color bgColor) {
-        ArrayList<String> gridStr = toStringArray();
-        for (int i=0; i < height+2; i++) {
-            screen.putString(3, 3+i, gridStr.get(i), fgColor, bgColor);
-        }
+    public void setSnake(Snake snake) {
+        this.snake = snake;
+    }
+
+    public void init() {
+        this.spawnFruit();
     }
 
     public void update(Key inputKey) {
@@ -57,23 +48,21 @@ public class World {
         cell.setOccupant(fruit);
     }
 
-    public void requestMove(Snake snake) {
-        Cell headLoc = snake.head().getLocation();
-        Cell target = headLoc.neighbour(snake.head().getDir());
+    public void handleRequestToMoveTo(Cell target) {
         if (target.isOccupied()) {
             if (target.getOccupant() instanceof Fruit) {
                 numFruitCollected += 1;
-                target.setOccupant(null);
+                target.setOccupant(new NullGameObject());
                 Cell tailLoc = snake.tail().getLocation();
                 snake.move();
                 snake.extend(tailLoc);
                 spawnFruit();
             } else {
                 gameOver = true;
-                return;
             }
+        } else {
+            snake.move();
         }
-        snake.move();
     }
 
     public boolean gameIsOver() {

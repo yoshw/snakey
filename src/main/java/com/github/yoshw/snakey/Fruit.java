@@ -9,6 +9,11 @@ public class Fruit extends GameObject {
     }
 
     @Override
+    public boolean isNull() {
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "o";
     }
